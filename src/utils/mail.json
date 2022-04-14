@@ -1,0 +1,6 @@
+{
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "user": "confetapp@gmail.com",
+    "pass": "confeitaria12"
+}
