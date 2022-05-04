@@ -197,7 +197,6 @@ module.exports = {
             await token.delete();          
         } catch (error) {
             res.json({msg: "An error occured"});
-            console.log(error);
         }
     },
 

@@ -17,6 +17,21 @@ module.exports = {
         return res.json(sellers)
     },
 
+    async seller(req, res) {
+        const {id} = req.params
+
+        try {
+            const seller = await Product.find({seller: id})
+                .populate('seller')
+                .populate('category')
+                .populate('subcategory')
+                
+            return res.json(seller)
+        } catch (error) {
+            return res.json(error)
+        }
+    },
+
     // RETURN ONLY THE LOGGED SELLER
     async logged(req, res) {
         const {seller} = req
@@ -31,7 +46,7 @@ module.exports = {
 
     //CREATE SELLER
     async register(req, res) {
-        const {name, email, password, confPassword} = req.body
+        const {name, email, password} = req.body
         try {
             //Validations
             if(!name) {
@@ -44,10 +59,6 @@ module.exports = {
 
             if(!password) {
                 return res.json({msg: 'A senha é obrigatória!'})
-            }
-
-            if(password !== confPassword) {
-                return res.json({msg: 'As senhas não correspondem!'})
             }
 
             // VERIFIED IF SELLER EXISTS
@@ -72,7 +83,7 @@ module.exports = {
             await seller.save()
 
             // AFTER SAVE SHOW THIS
-            return res.json(seller)
+            return res.json({msg: 'Vendedor criado com sucesso!'})
         } catch (error) {
             // IF HAVE AN ERROR SHOW THIS
             return res.json({msg: 'Erro ao criar usuário, tente novamente mais tarde!'})
@@ -134,7 +145,7 @@ module.exports = {
                 sellerId: seller._id
             }, secret, {expiresIn: '1d'})
 
-            return res.json({msg: 'Autenticação realizada com sucesso', token, seller})
+            return res.json({seller, token})
 
 
         } catch (err) {
@@ -234,7 +245,7 @@ module.exports = {
                 crop: 'fill'
             })
             
-            await Seller.findByIdAndUpdate(seller._id, {avatar: result.url})
+            await Seller.findByIdAndUpdate(seller._id, {avatar: result.secure_url})
             res.status(201).json({msg: 'imagem alterada com sucesso'})
         } catch (error) {
             res.json({msg: 'server error, try again'})

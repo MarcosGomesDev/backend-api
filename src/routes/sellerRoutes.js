@@ -7,6 +7,7 @@ const sellerRoutes = express.Router()
 
 // SELLER ROUTES
 sellerRoutes.get('/sellers', isAuthSeller, seller.index) // RETURN SELLERS
+sellerRoutes.get('/seller/:id', seller.seller) // RETURN ONE SELLER
 sellerRoutes.get('/seller', isAuthSeller, seller.logged) // RETURN LOGGED SELLER AND OUR PRODUCTS
 sellerRoutes.post('/sign-up/seller', seller.register) // CREATE NEW SELLER
 sellerRoutes.post('/sign-in/seller', seller.login) // LOGIN SELLER
